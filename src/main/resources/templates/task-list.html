@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-Do List</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -118,7 +119,8 @@
                 th:classappend="${task.completed ? 'completed' : 'pending'}"></td>
             <td>
                 <a th:href="@{/tasks/edit/{id}(id=${task.id})}" class="button edit">Edit</a>
-                <a th:href="@{/tasks/delete/{id}(id=${task.id})}" class="button delete">Delete</a>
+                <a th:href="@{/tasks/delete/{id}(id=${task.id})}" class="button delete"
+                   onclick="confirmDelete(event, this)">Delete</a>
                 <form th:action="@{/tasks/{id}/complete(id=${task.id})}" method="post" style="display:inline;">
                     <button type="submit" class="button complete">Mark Complete</button>
                 </form>
@@ -127,5 +129,26 @@
         </tbody>
     </table>
 </div>
+<script>
+    function confirmDelete(event, element) {
+        event.preventDefault(); // Prevent immediate redirection
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: "This task will be permanently deleted!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "Cancel"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = element.href; // Proceed with deletion
+            }
+        });
+    }
+</script>
+
 </body>
 </html>

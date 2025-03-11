@@ -2,10 +2,13 @@ package com.mypackage.todolist.controller;
 
 import com.mypackage.todolist.model.Task;
 import com.mypackage.todolist.service.TaskService;
+import com.mypackage.todolist.service.TrieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/tasks")
@@ -13,6 +16,9 @@ public class TaskController {
 
     @Autowired
     private TaskService taskService;
+
+    @Autowired
+    private TrieService trieService;
 
     @GetMapping
     public String listTasks(Model model) {
@@ -53,6 +59,12 @@ public class TaskController {
     public String deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
         return "redirect:/tasks";
+    }
+
+    @GetMapping("/suggestions")
+    @ResponseBody
+    public List<String> getSuggestions(@RequestParam String query) {
+        return trieService.getSuggestions(query.toLowerCase());
     }
 
 }
