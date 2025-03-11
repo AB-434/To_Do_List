@@ -45,6 +45,12 @@ public class TaskController {
         return "task-form";
     }
 
+    @PostMapping("/update/{id}")
+    public String updateTask(@PathVariable Long id, @ModelAttribute Task task) {
+        taskService.updateTask(id, task);
+        return "redirect:/tasks";
+    }
+
     @PostMapping("/{id}/complete")
     public String markAsComplete(@PathVariable Long id) {
         Task task = taskService.getTaskById(id);

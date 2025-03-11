@@ -29,4 +29,12 @@ public class TaskService {
         return taskRepository.findById(id).orElse(null);
     }
 
+    public void updateTask(Long id, Task updatedTask) {
+        Task existingTask = getTaskById(id);
+        existingTask.setTitle(updatedTask.getTitle());
+        existingTask.setDescription(updatedTask.getDescription());
+        existingTask.setCompleted(updatedTask.isCompleted());
+        taskRepository.save(existingTask);
+    }
+
 }
